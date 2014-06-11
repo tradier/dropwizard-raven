@@ -11,7 +11,7 @@
     <version>0.0.1</version>
     <packaging>jar</packaging>
 
-    <name>Dropwizard Raven Bundle</name>
+    <name>Dropwizard Raven</name>
     <description>Dropwizard integration for error logging to Sentry</description>
     <url>https://github.com/tradier/dropwizard-raven</url>
 
