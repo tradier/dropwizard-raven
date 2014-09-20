@@ -9,7 +9,7 @@
 
     <groupId>com.tradier</groupId>
     <artifactId>dropwizard-raven</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
 
     <name>Dropwizard Raven</name>
     <description>Dropwizard integration for error logging to Sentry</description>
