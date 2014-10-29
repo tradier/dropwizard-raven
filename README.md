@@ -47,7 +47,7 @@ Please file bug reports and feature requests in [GitHub issues](https://github.c
 
 ## Acknowledgements
 
-Thanks to @gini for [dropwizard-gelf](https://github.com/gini/dropwizard-gelf).
+Thanks to [gini](https://github.com/gini) for [dropwizard-gelf](https://github.com/gini/dropwizard-gelf).
 
 ## Copyright
 
