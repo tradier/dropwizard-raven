@@ -20,8 +20,8 @@ public final class UncaughtExceptionHandlers {
      * Returns an exception handler that exits the system. This is particularly useful for the main
      * thread, which may start up other, non-daemon threads, but fail to fully initialize the
      * application successfully.
-     * <p/>
-     * <p>Example usage:
+     *
+     * <p>Example usage:</p>
      * <pre>public static void main(String[] args) {
      *   Thread.currentThread().setUncaughtExceptionHandler(UncaughtExceptionHandlers.systemExit());
      *   ...
