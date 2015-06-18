@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
-        <version>7</version>
+        <version>9</version>
     </parent>
 
     <repositories>
@@ -19,6 +19,7 @@
     <groupId>com.tradier</groupId>
     <artifactId>dropwizard-raven</artifactId>
     <version>0.1.1</version>
+    <packaging>jar</packaging>
     <name>Dropwizard Raven</name>
     <description>Dropwizard integration for error logging to Sentry</description>
     <url>https://github.com/tradier/dropwizard-raven</url>
