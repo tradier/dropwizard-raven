@@ -59,7 +59,7 @@
     </issueManagement>
 
     <properties>
-        <io.dropwizard.version>0.7.1</io.dropwizard.version>
+        <io.dropwizard.version>0.8.0</io.dropwizard.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

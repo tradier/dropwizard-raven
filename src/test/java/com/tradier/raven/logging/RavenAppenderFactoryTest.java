@@ -1,18 +1,18 @@
 package com.tradier.raven.logging;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertThat;
+import io.dropwizard.configuration.ConfigurationException;
+
 import java.io.IOException;
 
 import org.junit.Test;
 
+import ch.qos.logback.classic.AsyncAppender;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
-import io.dropwizard.configuration.ConfigurationException;
-import io.dropwizard.logging.AsyncAppender;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertThat;
 
 public class RavenAppenderFactoryTest {
 
