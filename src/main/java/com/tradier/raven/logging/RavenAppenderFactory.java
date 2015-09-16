@@ -4,12 +4,16 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.Layout;
+import ch.qos.logback.core.filter.Filter;
+import ch.qos.logback.core.spi.FilterReply;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.dropwizard.logging.AbstractAppenderFactory;
 import net.kencochrane.raven.logback.SentryAppender;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
+
 
 @JsonTypeName("raven")
 public class RavenAppenderFactory extends AbstractAppenderFactory {
@@ -47,9 +51,30 @@ public class RavenAppenderFactory extends AbstractAppenderFactory {
         if(tags != null)
         	appender.setTags(tags);
 
-        addThresholdFilter(appender, threshold);
         appender.start();
 
-        return wrapAsync(appender);
+        Appender asyncAppender = wrapAsync(appender);
+        addThresholdFilter(asyncAppender, threshold);
+        addDroppingRavenLoggingFilter(asyncAppender);
+
+        return asyncAppender;
+    }
+
+    public void addDroppingRavenLoggingFilter(Appender appender) {
+        Filter filter = new DroppingRavenLoggingFilter();
+        filter.start();
+        appender.addFilter(filter);
+    }
+
+    public static class DroppingRavenLoggingFilter extends Filter<ILoggingEvent> {
+
+        @Override
+        public FilterReply decide(ILoggingEvent event) {
+            if (event.getLoggerName().startsWith("net.kencochrane.raven")) {
+                return FilterReply.DENY;
+            } else {
+                return FilterReply.ACCEPT;
+            }
+        }
     }
 }
