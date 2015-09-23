@@ -45,7 +45,7 @@ public class RavenAppenderFactory extends AbstractAppenderFactory {
         checkNotNull(context);
 
         final SentryAppender appender = new SentryAppender();
-
+        appender.setName("dropwizard-raven");
         appender.setContext(context);
         appender.setDsn(dsn);
         if(tags != null)
