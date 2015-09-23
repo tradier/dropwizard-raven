@@ -1,17 +1,17 @@
 package com.tradier.raven.logging;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import io.dropwizard.logging.AbstractAppenderFactory;
+import net.kencochrane.raven.logback.SentryAppender;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.filter.Filter;
 import ch.qos.logback.core.spi.FilterReply;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import io.dropwizard.logging.AbstractAppenderFactory;
-import net.kencochrane.raven.logback.SentryAppender;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 
 
@@ -53,15 +53,15 @@ public class RavenAppenderFactory extends AbstractAppenderFactory {
 
         appender.start();
 
-        Appender asyncAppender = wrapAsync(appender);
+        Appender<ILoggingEvent> asyncAppender = wrapAsync(appender);
         addThresholdFilter(asyncAppender, threshold);
         addDroppingRavenLoggingFilter(asyncAppender);
 
         return asyncAppender;
     }
 
-    public void addDroppingRavenLoggingFilter(Appender appender) {
-        Filter filter = new DroppingRavenLoggingFilter();
+    public void addDroppingRavenLoggingFilter(Appender<ILoggingEvent> appender) {
+        Filter<ILoggingEvent> filter = new DroppingRavenLoggingFilter();
         filter.start();
         appender.addFilter(filter);
     }
