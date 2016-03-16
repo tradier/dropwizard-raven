@@ -6,13 +6,13 @@ import com.google.common.base.Optional;
 import org.slf4j.LoggerFactory;
 
 /**
- * A class adding a configured {@link net.kencochrane.raven.logback.SentryAppender} to the root logger.
+ * A class adding a configured {@link com.getsentry.raven.logback.SentryAppender} to the root logger.
  */
 public final class RavenBootstrap {
     private RavenBootstrap() { /* No instance methods */ }
 
     /**
-     * Bootstrap the SLF4J root logger with a configured {@link net.kencochrane.raven.logback.SentryAppender}.
+     * Bootstrap the SLF4J root logger with a configured {@link com.getsentry.raven.logback.SentryAppender}.
      *
      * @param dsn             The DSN (Data Source Name) for your project
      * @param cleanRootLogger If true, detach and stop all other appenders from the root logger
@@ -22,7 +22,7 @@ public final class RavenBootstrap {
     }
 
     /**
-     * Bootstrap the SLF4J root logger with a configured {@link net.kencochrane.raven.logback.SentryAppender}.
+     * Bootstrap the SLF4J root logger with a configured {@link com.getsentry.raven.logback.SentryAppender}.
      *
      * @param dsn             The DSN (Data Source Name) for your project
      * @param tags            Custom tags to send to Sentry along with errors

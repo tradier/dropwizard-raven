@@ -1,8 +1,10 @@
 package com.tradier.raven.logging;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.getsentry.raven.logback.SentryAppender;
 import io.dropwizard.logging.AbstractAppenderFactory;
-import net.kencochrane.raven.logback.SentryAppender;
+
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
@@ -70,7 +72,7 @@ public class RavenAppenderFactory extends AbstractAppenderFactory {
 
         @Override
         public FilterReply decide(ILoggingEvent event) {
-            if (event.getLoggerName().startsWith("net.kencochrane.raven")) {
+            if (event.getLoggerName().startsWith("com.getsentry.raven")) {
                 return FilterReply.DENY;
             } else {
                 return FilterReply.ACCEPT;
