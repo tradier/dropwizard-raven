@@ -2,6 +2,8 @@ package com.tradier.raven.logging;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.getsentry.raven.logback.SentryAppender;
 import io.dropwizard.logging.AbstractAppenderFactory;
 
@@ -11,9 +13,6 @@ import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.filter.Filter;
 import ch.qos.logback.core.spi.FilterReply;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 
 
@@ -25,6 +24,12 @@ public class RavenAppenderFactory extends AbstractAppenderFactory {
 
     @JsonProperty
     private String tags = null;
+
+    @JsonProperty
+    private String release;
+
+  @JsonProperty
+  private String environment;
 
     public String getDsn() {
 		return dsn;
@@ -42,41 +47,55 @@ public class RavenAppenderFactory extends AbstractAppenderFactory {
 		this.tags = tags;
 	}
 
+	public void setRelease(String release) {
+	  this.release = release;
+	}
+
+	public void setEnvironment(String environment) {
+	  this.environment = environment;
+	}
+
 	@Override
     public Appender<ILoggingEvent> build(LoggerContext context, String applicationName, Layout<ILoggingEvent> layout) {
-        checkNotNull(context);
+	checkNotNull(context);
 
-        final SentryAppender appender = new SentryAppender();
-        appender.setName("dropwizard-raven");
-        appender.setContext(context);
-        appender.setDsn(dsn);
-        if(tags != null)
-        	appender.setTags(tags);
+	final SentryAppender appender = new SentryAppender();
+	appender.setName("dropwizard-raven");
+	appender.setContext(context);
+	appender.setDsn(dsn);
+	if (release != null) {
+		appender.setRelease(release);
+	}
+	if (environment != null) {
+		appender.setEnvironment(environment);
+	}
+	if(tags != null)
+		appender.setTags(tags);
 
-        appender.start();
+	appender.start();
 
-        Appender<ILoggingEvent> asyncAppender = wrapAsync(appender);
-        addThresholdFilter(asyncAppender, threshold);
-        addDroppingRavenLoggingFilter(asyncAppender);
+	Appender<ILoggingEvent> asyncAppender = wrapAsync(appender);
+	addThresholdFilter(asyncAppender, threshold);
+	addDroppingRavenLoggingFilter(asyncAppender);
 
-        return asyncAppender;
+	return asyncAppender;
     }
 
     public void addDroppingRavenLoggingFilter(Appender<ILoggingEvent> appender) {
-        Filter<ILoggingEvent> filter = new DroppingRavenLoggingFilter();
-        filter.start();
-        appender.addFilter(filter);
+	Filter<ILoggingEvent> filter = new DroppingRavenLoggingFilter();
+	filter.start();
+	appender.addFilter(filter);
     }
 
     public static class DroppingRavenLoggingFilter extends Filter<ILoggingEvent> {
 
-        @Override
-        public FilterReply decide(ILoggingEvent event) {
-            if (event.getLoggerName().startsWith("com.getsentry.raven")) {
-                return FilterReply.DENY;
-            } else {
-                return FilterReply.ACCEPT;
-            }
-        }
+	@Override
+	public FilterReply decide(ILoggingEvent event) {
+	    if (event.getLoggerName().startsWith("com.getsentry.raven")) {
+		return FilterReply.DENY;
+	    } else {
+		return FilterReply.ACCEPT;
+	    }
+	}
     }
 }
