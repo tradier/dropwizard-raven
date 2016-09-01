@@ -2,10 +2,12 @@ package com.tradier.raven.logging;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import io.dropwizard.logging.AbstractAppenderFactory;
+import io.dropwizard.logging.async.AsyncAppenderFactory;
+import io.dropwizard.logging.filter.LevelFilterFactory;
+import io.dropwizard.logging.layout.LayoutFactory;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
-import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.filter.Filter;
 import ch.qos.logback.core.spi.FilterReply;
 
@@ -14,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.getsentry.raven.logback.SentryAppender;
 
 @JsonTypeName("raven")
-public class RavenAppenderFactory extends AbstractAppenderFactory {
+public class RavenAppenderFactory extends AbstractAppenderFactory<ILoggingEvent> {
 
   private static final String APPENDER_NAME = "dropwizard-raven";
 
@@ -74,8 +76,11 @@ public class RavenAppenderFactory extends AbstractAppenderFactory {
   }
 
   @Override
-  public Appender<ILoggingEvent> build(LoggerContext context, String applicationName,
-      Layout<ILoggingEvent> layout) {
+  public Appender<ILoggingEvent> build(LoggerContext context,
+      String applicationName,
+      LayoutFactory<ILoggingEvent> layoutFactory,
+      LevelFilterFactory<ILoggingEvent> levelFilterFactory,
+      AsyncAppenderFactory<ILoggingEvent> asyncAppenderFactory) {
     checkNotNull(context);
 
     final SentryAppender appender = new SentryAppender();
@@ -94,10 +99,11 @@ public class RavenAppenderFactory extends AbstractAppenderFactory {
     if (tags != null) {
       appender.setTags(tags);
     }
+
+    appender.addFilter(levelFilterFactory.build(threshold));
     appender.start();
 
-    final Appender<ILoggingEvent> asyncAppender = wrapAsync(appender);
-    addThresholdFilter(asyncAppender, threshold);
+    final Appender<ILoggingEvent> asyncAppender = wrapAsync(appender, asyncAppenderFactory, context);
     addDroppingRavenLoggingFilter(asyncAppender);
 
     return asyncAppender;
