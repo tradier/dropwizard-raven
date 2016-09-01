@@ -1,5 +1,7 @@
 package com.tradier.raven.logging;
 
+import static org.slf4j.Logger.ROOT_LOGGER_NAME;
+
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Level;
@@ -66,7 +68,7 @@ public final class RavenBootstrap {
 
   private static void registerAppender(String dsn, boolean cleanRootLogger,
       RavenAppenderFactory raven) {
-    final Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+    final Logger root = (Logger) LoggerFactory.getLogger(ROOT_LOGGER_NAME);
 
     if (cleanRootLogger) {
       root.detachAndStopAllAppenders();
