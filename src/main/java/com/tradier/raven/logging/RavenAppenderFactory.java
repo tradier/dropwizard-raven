@@ -103,13 +103,13 @@ public class RavenAppenderFactory extends AbstractAppenderFactory {
     return asyncAppender;
   }
 
-  public void addDroppingRavenLoggingFilter(Appender<ILoggingEvent> appender) {
+  private void addDroppingRavenLoggingFilter(Appender<ILoggingEvent> appender) {
     final Filter<ILoggingEvent> filter = new DroppingRavenLoggingFilter();
     filter.start();
     appender.addFilter(filter);
   }
 
-  public static class DroppingRavenLoggingFilter extends Filter<ILoggingEvent> {
+  private static class DroppingRavenLoggingFilter extends Filter<ILoggingEvent> {
     @Override
     public FilterReply decide(ILoggingEvent event) {
       if (event.getLoggerName().startsWith("com.getsentry.raven")) {
