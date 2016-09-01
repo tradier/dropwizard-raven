@@ -16,7 +16,7 @@ import com.getsentry.raven.logback.SentryAppender;
 @JsonTypeName("raven")
 public class RavenAppenderFactory extends AbstractAppenderFactory {
 
-  private final static String APPENDER_NAME = "dropwizard-raven";
+  private static final String APPENDER_NAME = "dropwizard-raven";
 
   @JsonProperty
   private String dsn = null;
