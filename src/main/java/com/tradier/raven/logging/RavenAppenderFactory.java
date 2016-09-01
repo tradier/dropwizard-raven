@@ -22,13 +22,16 @@ public class RavenAppenderFactory extends AbstractAppenderFactory {
   private String dsn = null;
 
   @JsonProperty
-  private String tags = null;
+  private String environment = null;
 
   @JsonProperty
   private String release = null;
 
   @JsonProperty
-  private String environment = null;
+  private String serverName = null;
+
+  @JsonProperty
+  private String tags = null;
 
   public String getDsn() {
     return dsn;
@@ -38,20 +41,36 @@ public class RavenAppenderFactory extends AbstractAppenderFactory {
     this.dsn = dsn;
   }
 
-  public String getTags() {
-    return tags;
+  public String getEnvironment() {
+    return environment;
   }
 
-  public void setTags(String tags) {
-    this.tags = tags;
+  public void setEnvironment(String environment) {
+    this.environment = environment;
+  }
+
+  public String getRelease() {
+    return release;
   }
 
   public void setRelease(String release) {
     this.release = release;
   }
 
-  public void setEnvironment(String environment) {
-    this.environment = environment;
+  public String getServerName() {
+    return serverName;
+  }
+
+  public void setServerName(String serverName) {
+    this.serverName = serverName;
+  }
+
+  public String getTags() {
+    return tags;
+  }
+
+  public void setTags(String tags) {
+    this.tags = tags;
   }
 
   @Override
@@ -63,11 +82,14 @@ public class RavenAppenderFactory extends AbstractAppenderFactory {
     appender.setName(APPENDER_NAME);
     appender.setContext(context);
     appender.setDsn(dsn);
+    if (environment != null) {
+      appender.setEnvironment(environment);
+    }
     if (release != null) {
       appender.setRelease(release);
     }
-    if (environment != null) {
-      appender.setEnvironment(environment);
+    if (serverName != null) {
+      appender.setServerName(serverName);
     }
     if (tags != null) {
       appender.setTags(tags);
