@@ -16,6 +16,8 @@ import com.getsentry.raven.logback.SentryAppender;
 @JsonTypeName("raven")
 public class RavenAppenderFactory extends AbstractAppenderFactory {
 
+  private final static String APPENDER_NAME = "dropwizard-raven";
+
   @JsonProperty
   private String dsn = null;
 
@@ -58,7 +60,7 @@ public class RavenAppenderFactory extends AbstractAppenderFactory {
     checkNotNull(context);
 
     final SentryAppender appender = new SentryAppender();
-    appender.setName("dropwizard-raven");
+    appender.setName(APPENDER_NAME);
     appender.setContext(context);
     appender.setDsn(dsn);
     if (release != null) {
