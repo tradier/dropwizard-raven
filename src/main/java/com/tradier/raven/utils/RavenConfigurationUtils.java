@@ -4,7 +4,8 @@ import io.dropwizard.Configuration;
 import io.dropwizard.logging.AppenderFactory;
 import io.dropwizard.logging.DefaultLoggingFactory;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
 import com.tradier.raven.logging.RavenAppenderFactory;
 
 public class RavenConfigurationUtils {
@@ -19,7 +20,7 @@ public class RavenConfigurationUtils {
       }
     }
 
-    return Optional.absent();
+    return Optional.empty();
   }
 
 }

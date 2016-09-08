@@ -1,7 +1,8 @@
 package com.tradier.raven.logging;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import io.dropwizard.configuration.ConfigurationException;
 import io.dropwizard.logging.async.AsyncLoggingEventAppenderFactory;
@@ -27,8 +28,11 @@ public class RavenAppenderFactoryTest {
   public void hasValidDefaults() throws IOException, ConfigurationException {
     final RavenAppenderFactory factory = new RavenAppenderFactory();
 
-    assertThat("default dsn is unset", factory.getDsn(), nullValue());
-    assertThat("default additional fields are empty", factory.getTags(), nullValue());
+    assertNull("default dsn is unset", factory.getDsn());
+    assertFalse("default tags are empty", factory.getTags().isPresent());
+    assertFalse("default environment is empty", factory.getEnvironment().isPresent());
+    assertFalse("default release is empty", factory.getRelease().isPresent());
+    assertFalse("default serverName is empty", factory.getServerName().isPresent());
   }
 
   @Test(expected = NullPointerException.class)

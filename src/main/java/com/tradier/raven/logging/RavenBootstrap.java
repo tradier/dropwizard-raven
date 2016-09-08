@@ -5,12 +5,12 @@ import io.dropwizard.logging.async.AsyncLoggingEventAppenderFactory;
 import io.dropwizard.logging.filter.ThresholdLevelFilterFactory;
 import io.dropwizard.logging.layout.DropwizardLayoutFactory;
 
+import java.util.Optional;
+
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-
-import com.google.common.base.Optional;
 
 /**
  * A class adding a configured {@link com.getsentry.raven.logback.SentryAppender} to the root
@@ -27,7 +27,7 @@ public final class RavenBootstrap {
    * @param cleanRootLogger If true, detach and stop all other appenders from the root logger
    */
   public static void bootstrap(final String dsn, boolean cleanRootLogger) {
-    bootstrap(dsn, Optional.<String>absent(), cleanRootLogger);
+    bootstrap(dsn, Optional.empty(), cleanRootLogger);
   }
 
   /**
@@ -42,7 +42,7 @@ public final class RavenBootstrap {
     final RavenAppenderFactory raven = new RavenAppenderFactory();
     raven.setThreshold(Level.ERROR);
     raven.setDsn(dsn);
-    raven.setTags(tags.get());
+    raven.setTags(tags);
 
     registerAppender(dsn, cleanRootLogger, raven);
   }
@@ -58,11 +58,11 @@ public final class RavenBootstrap {
    * @param release The release name to pass to Sentry
    */
   public static void bootstrap(final String dsn, Optional<String> tags, boolean cleanRootLogger,
-      String environment, String release) {
+      Optional<String> environment, Optional<String> release) {
     final RavenAppenderFactory raven = new RavenAppenderFactory();
     raven.setThreshold(Level.ERROR);
     raven.setDsn(dsn);
-    raven.setTags(tags.get());
+    raven.setTags(tags);
     raven.setEnvironment(environment);
     raven.setRelease(release);
 
@@ -81,11 +81,11 @@ public final class RavenBootstrap {
    * @param serverName The server name to pass to Sentry
    */
   public static void bootstrap(final String dsn, Optional<String> tags, boolean cleanRootLogger,
-      String environment, String release, String serverName) {
+      Optional<String> environment, Optional<String> release, Optional<String> serverName) {
     final RavenAppenderFactory raven = new RavenAppenderFactory();
     raven.setThreshold(Level.ERROR);
     raven.setDsn(dsn);
-    raven.setTags(tags.get());
+    raven.setTags(tags);
     raven.setEnvironment(environment);
     raven.setRelease(release);
     raven.setServerName(serverName);

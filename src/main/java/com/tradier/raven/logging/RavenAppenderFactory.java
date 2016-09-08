@@ -5,6 +5,11 @@ import io.dropwizard.logging.AbstractAppenderFactory;
 import io.dropwizard.logging.async.AsyncAppenderFactory;
 import io.dropwizard.logging.filter.LevelFilterFactory;
 import io.dropwizard.logging.layout.LayoutFactory;
+
+import java.util.Optional;
+
+import javax.validation.constraints.NotNull;
+
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
@@ -20,20 +25,21 @@ public class RavenAppenderFactory extends AbstractAppenderFactory<ILoggingEvent>
 
   private static final String APPENDER_NAME = "dropwizard-raven";
 
+  @NotNull
   @JsonProperty
   private String dsn = null;
 
   @JsonProperty
-  private String environment = null;
+  private Optional<String> environment = Optional.empty();
 
   @JsonProperty
-  private String release = null;
+  private Optional<String> release = Optional.empty();
 
   @JsonProperty
-  private String serverName = null;
+  private Optional<String> serverName = Optional.empty();
 
   @JsonProperty
-  private String tags = null;
+  private Optional<String> tags = Optional.empty();
 
   public String getDsn() {
     return dsn;
@@ -43,35 +49,35 @@ public class RavenAppenderFactory extends AbstractAppenderFactory<ILoggingEvent>
     this.dsn = dsn;
   }
 
-  public String getEnvironment() {
+  public Optional<String> getEnvironment() {
     return environment;
   }
 
-  public void setEnvironment(String environment) {
+  public void setEnvironment(Optional<String> environment) {
     this.environment = environment;
   }
 
-  public String getRelease() {
+  public Optional<String> getRelease() {
     return release;
   }
 
-  public void setRelease(String release) {
+  public void setRelease(Optional<String> release) {
     this.release = release;
   }
 
-  public String getServerName() {
+  public Optional<String> getServerName() {
     return serverName;
   }
 
-  public void setServerName(String serverName) {
+  public void setServerName(Optional<String> serverName) {
     this.serverName = serverName;
   }
 
-  public String getTags() {
+  public Optional<String> getTags() {
     return tags;
   }
 
-  public void setTags(String tags) {
+  public void setTags(Optional<String> tags) {
     this.tags = tags;
   }
 
@@ -87,20 +93,13 @@ public class RavenAppenderFactory extends AbstractAppenderFactory<ILoggingEvent>
     appender.setName(APPENDER_NAME);
     appender.setContext(context);
     appender.setDsn(dsn);
-    if (environment != null) {
-      appender.setEnvironment(environment);
-    }
-    if (release != null) {
-      appender.setRelease(release);
-    }
-    if (serverName != null) {
-      appender.setServerName(serverName);
-    }
-    if (tags != null) {
-      appender.setTags(tags);
-    }
+    appender.setEnvironment(environment.orElse(null));
+    appender.setRelease(release.orElse(null));
+    appender.setServerName(serverName.orElse(null));
+    appender.setTags(tags.orElse(null));
 
     appender.addFilter(levelFilterFactory.build(threshold));
+    getFilterFactories().stream().forEach(f -> appender.addFilter(f.build()));
     appender.start();
 
     final Appender<ILoggingEvent> asyncAppender = wrapAsync(appender, asyncAppenderFactory, context);
