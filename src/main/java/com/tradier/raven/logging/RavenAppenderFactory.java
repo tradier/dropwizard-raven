@@ -14,11 +14,11 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.filter.Filter;
-import ch.qos.logback.core.spi.FilterReply;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.getsentry.raven.logback.SentryAppender;
+import com.tradier.raven.filters.DroppingRavenLoggingFilter;
 
 @JsonTypeName("raven")
 public class RavenAppenderFactory extends AbstractAppenderFactory<ILoggingEvent> {
@@ -114,14 +114,4 @@ public class RavenAppenderFactory extends AbstractAppenderFactory<ILoggingEvent>
     appender.addFilter(filter);
   }
 
-  private static class DroppingRavenLoggingFilter extends Filter<ILoggingEvent> {
-    @Override
-    public FilterReply decide(ILoggingEvent event) {
-      if (event.getLoggerName().startsWith("com.getsentry.raven")) {
-        return FilterReply.DENY;
-      } else {
-        return FilterReply.ACCEPT;
-      }
-    }
-  }
 }
