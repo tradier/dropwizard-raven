@@ -25,6 +25,6 @@ public class DroppingRavenLoggingFilterTest {
 
     final LoggingEvent evt = new LoggingEvent();
     evt.setLoggerName("com.tradier.raven");
-    assertEquals(FilterReply.ACCEPT, filter.decide(evt));
+    assertEquals(FilterReply.NEUTRAL, filter.decide(evt));
   }
 }
