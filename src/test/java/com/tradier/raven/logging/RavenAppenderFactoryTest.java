@@ -30,6 +30,7 @@ public class RavenAppenderFactoryTest {
 
     assertNull("default dsn is unset", factory.getDsn());
     assertFalse("default environment is empty", factory.getEnvironment().isPresent());
+    assertFalse("default extraTags is empty", factory.getEnvironment().isPresent());
     assertFalse("default ravenFactory is empty", factory.getRavenFactory().isPresent());
     assertFalse("default release is empty", factory.getRelease().isPresent());
     assertFalse("default serverName is empty", factory.getServerName().isPresent());
