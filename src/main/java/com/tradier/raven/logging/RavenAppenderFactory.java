@@ -93,10 +93,11 @@ public class RavenAppenderFactory extends AbstractAppenderFactory<ILoggingEvent>
     appender.setName(APPENDER_NAME);
     appender.setContext(context);
     appender.setDsn(dsn);
-    appender.setEnvironment(environment.orElse(null));
-    appender.setRelease(release.orElse(null));
-    appender.setServerName(serverName.orElse(null));
-    appender.setTags(tags.orElse(null));
+
+    environment.ifPresent(appender::setEnvironment);
+    release.ifPresent(appender::setRelease);
+    serverName.ifPresent(appender::setServerName);
+    tags.ifPresent(appender::setTags);
 
     appender.addFilter(levelFilterFactory.build(threshold));
     getFilterFactories().stream().forEach(f -> appender.addFilter(f.build()));
