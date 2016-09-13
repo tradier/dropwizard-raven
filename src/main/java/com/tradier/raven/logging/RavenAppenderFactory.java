@@ -33,6 +33,9 @@ public class RavenAppenderFactory extends AbstractAppenderFactory<ILoggingEvent>
   private Optional<String> environment = Optional.empty();
 
   @JsonProperty
+  private Optional<String> ravenFactory = Optional.empty();
+
+  @JsonProperty
   private Optional<String> release = Optional.empty();
 
   @JsonProperty
@@ -55,6 +58,14 @@ public class RavenAppenderFactory extends AbstractAppenderFactory<ILoggingEvent>
 
   public void setEnvironment(Optional<String> environment) {
     this.environment = environment;
+  }
+
+  public Optional<String> getRavenFactory() {
+    return ravenFactory;
+  }
+
+  public void setRavenFactory(Optional<String> ravenFactory) {
+    this.ravenFactory = ravenFactory;
   }
 
   public Optional<String> getRelease() {
@@ -95,6 +106,7 @@ public class RavenAppenderFactory extends AbstractAppenderFactory<ILoggingEvent>
     appender.setDsn(dsn);
 
     environment.ifPresent(appender::setEnvironment);
+    ravenFactory.ifPresent(appender::setRavenFactory);
     release.ifPresent(appender::setRelease);
     serverName.ifPresent(appender::setServerName);
     tags.ifPresent(appender::setTags);
