@@ -24,6 +24,16 @@ public final class RavenBootstrap {
    * {@link com.getsentry.raven.logback.SentryAppender}.
    *
    * @param dsn The DSN (Data Source Name) for your project
+   */
+  public static void bootstrap(final String dsn) {
+    bootstrap(dsn, true);
+  }
+
+  /**
+   * Bootstrap the SLF4J root logger with a configured
+   * {@link com.getsentry.raven.logback.SentryAppender}.
+   *
+   * @param dsn The DSN (Data Source Name) for your project
    * @param cleanRootLogger If true, detach and stop all other appenders from the root logger
    */
   public static void bootstrap(final String dsn, boolean cleanRootLogger) {
@@ -39,12 +49,7 @@ public final class RavenBootstrap {
    * @param cleanRootLogger If true, detach and stop all other appenders from the root logger
    */
   public static void bootstrap(final String dsn, Optional<String> tags, boolean cleanRootLogger) {
-    final RavenAppenderFactory raven = new RavenAppenderFactory();
-    raven.setThreshold(Level.ERROR);
-    raven.setDsn(dsn);
-    raven.setTags(tags);
-
-    registerAppender(dsn, cleanRootLogger, raven);
+    bootstrap(dsn, tags, Optional.empty(), Optional.empty(), cleanRootLogger);
   }
 
   /**
@@ -53,20 +58,13 @@ public final class RavenBootstrap {
    *
    * @param dsn The DSN (Data Source Name) for your project
    * @param tags Custom tags to send to Sentry along with errors
-   * @param cleanRootLogger If true, detach and stop all other appenders from the root logger
    * @param environment The environment name to pass to Sentry
    * @param release The release name to pass to Sentry
+   * @param cleanRootLogger If true, detach and stop all other appenders from the root logger
    */
-  public static void bootstrap(final String dsn, Optional<String> tags, boolean cleanRootLogger,
-      Optional<String> environment, Optional<String> release) {
-    final RavenAppenderFactory raven = new RavenAppenderFactory();
-    raven.setThreshold(Level.ERROR);
-    raven.setDsn(dsn);
-    raven.setTags(tags);
-    raven.setEnvironment(environment);
-    raven.setRelease(release);
-
-    registerAppender(dsn, cleanRootLogger, raven);
+  public static void bootstrap(final String dsn, Optional<String> tags,
+      Optional<String> environment, Optional<String> release, boolean cleanRootLogger) {
+    bootstrap(dsn, tags, environment, release, Optional.empty(), cleanRootLogger);
   }
 
   /**
@@ -75,13 +73,14 @@ public final class RavenBootstrap {
    *
    * @param dsn The DSN (Data Source Name) for your project
    * @param tags Custom tags to send to Sentry along with errors
-   * @param cleanRootLogger If true, detach and stop all other appenders from the root logger
    * @param environment The environment name to pass to Sentry
    * @param release The release name to pass to Sentry
    * @param serverName The server name to pass to Sentry
+   * @param cleanRootLogger If true, detach and stop all other appenders from the root logger
    */
-  public static void bootstrap(final String dsn, Optional<String> tags, boolean cleanRootLogger,
-      Optional<String> environment, Optional<String> release, Optional<String> serverName) {
+  public static void bootstrap(final String dsn, Optional<String> tags,
+      Optional<String> environment, Optional<String> release, Optional<String> serverName,
+      boolean cleanRootLogger) {
     final RavenAppenderFactory raven = new RavenAppenderFactory();
     raven.setThreshold(Level.ERROR);
     raven.setDsn(dsn);
@@ -103,7 +102,8 @@ public final class RavenBootstrap {
 
     final ThresholdLevelFilterFactory levelFilterFactory = new ThresholdLevelFilterFactory();
     final DropwizardLayoutFactory layoutFactory = new DropwizardLayoutFactory();
-    final AsyncLoggingEventAppenderFactory asyncAppenderFactory = new AsyncLoggingEventAppenderFactory();
+    final AsyncLoggingEventAppenderFactory asyncAppenderFactory =
+        new AsyncLoggingEventAppenderFactory();
     root.addAppender(raven.build(root.getLoggerContext(), dsn, layoutFactory, levelFilterFactory,
         asyncAppenderFactory));
   }
