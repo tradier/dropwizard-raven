@@ -1,4 +1,8 @@
-# Dropwizard Raven [![Build Status](https://travis-ci.org/tradier/dropwizard-raven.svg?branch=master)](https://travis-ci.org/tradier/dropwizard-raven)
+# Dropwizard Raven
+
+[![Build Status](https://travis-ci.org/tradier/dropwizard-raven.svg?branch=master)](https://travis-ci.org/tradier/dropwizard-raven)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tradier/dropwizard-raven.svg)](http://mvnrepository.com/artifact/com.tradier/dropwizard-raven)
+
 
 Dropwizard integration for error logging to [Sentry](https://getsentry.com).
 
