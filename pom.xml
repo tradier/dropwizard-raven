@@ -62,7 +62,7 @@
 
     <properties>
         <io.dropwizard.version>1.0.0</io.dropwizard.version>
-        <getsentry.raven.version>7.6.0</getsentry.raven.version>
+        <getsentry.raven.version>8.0.2</getsentry.raven.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
