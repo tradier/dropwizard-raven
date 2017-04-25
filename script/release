@@ -7,6 +7,8 @@ set -e
 
 read -p "Release to maven central repository (yes/no)? "
 
+mkdir -p tmp
+
 if ( [ "$REPLY" == "yes" ] ) then
   DATE=$(date +"%Y-%m-%d-%H-%M-%S")
   mvn clean deploy -P release -B -e | tee "tmp/$DATE-release.log"
