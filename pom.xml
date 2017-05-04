@@ -157,4 +157,60 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+             <profile>
+                 <id>java8-disable-strict-javadoc</id>
+                 <activation>
+                     <jdk>[1.8,)</jdk>
+                 </activation>
+                 <properties>
+                     <javadoc.doclint.none>-Xdoclint:none</javadoc.doclint.none>
+                 </properties>
+             </profile>
+             <profile>
+                 <id>release</id>
+                 <build>
+                     <plugins>
+                         <plugin>
+                             <groupId>org.apache.maven.plugins</groupId>
+                             <artifactId>maven-source-plugin</artifactId>
+                             <executions>
+                                 <execution>
+                                     <id>attach-sources</id>
+                                     <goals>
+                                         <goal>jar</goal>
+                                     </goals>
+                                 </execution>
+                             </executions>
+                         </plugin>
+                         <plugin>
+                             <groupId>org.apache.maven.plugins</groupId>
+                             <artifactId>maven-javadoc-plugin</artifactId>
+                             <executions>
+                                 <execution>
+                                     <id>attach-javadocs</id>
+                                     <goals>
+                                         <goal>jar</goal>
+                                     </goals>
+                                 </execution>
+                             </executions>
+                         </plugin>
+                         <plugin>
+                             <groupId>org.apache.maven.plugins</groupId>
+                             <artifactId>maven-gpg-plugin</artifactId>
+                             <executions>
+                                 <execution>
+                                     <id>sign-artifacts</id>
+                                     <phase>verify</phase>
+                                     <goals>
+                                         <goal>sign</goal>
+                                     </goals>
+                                 </execution>
+                             </executions>
+                         </plugin>
+                     </plugins>
+                 </build>
+             </profile>
+         </profiles>
 </project>
