@@ -14,6 +14,11 @@
 * Add `ravenFactory` configuration to appender
 * Add `extraTags` configuration to appender
 
+0.9.3
+-----
+
+* Backported adjust DroppingRavenLoggingFilter to default to NEUTRAL (eb2285ddcdb5d78e5fce3be5e539a875ea3d809c) to 0.9.x release branch
+
 0.9.2
 -----
 
