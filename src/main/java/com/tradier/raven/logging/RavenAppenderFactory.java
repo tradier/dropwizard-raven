@@ -91,7 +91,7 @@ public class RavenAppenderFactory extends AbstractAppenderFactory {
       if (event.getLoggerName().startsWith("com.getsentry.raven")) {
         return FilterReply.DENY;
       } else {
-        return FilterReply.ACCEPT;
+        return FilterReply.NEUTRAL;
       }
     }
   }
