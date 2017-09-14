@@ -32,9 +32,9 @@ Include the `raven` appender in your `config.yml`:
 
 ```yaml
 appenders:
-  - type: console
   - type: raven
-    dsn: https://user:pass@getsentry.com/appid
+    threshold: ERROR
+    dsn: https://user:pass@sentry.io/appid
     environment: production
     extraTags: foo,bar,baz
     ravenFactory: com.example.RavenFactory
@@ -47,6 +47,7 @@ appenders:
 
 | Setting | Default | Description | Example Value |
 |---|---|---|---|
+| `threshold` | ALL | The log level to configure to send to Sentry | `ERROR` |
 | `dsn` |   | Data Source Name - `'https://{PUBLIC_KEY}:{SECRET_KEY}@sentry.io/{PROJECT_ID}'` | `https://foo:bar@sentry.io/12345` |
 | `environment` | [empty] | The environment your application is running in |  `production` |
 | `extraTags` | [empty] | `Additional tag names to be extracted from MDC when using SLF4J` | `foo,bar,baz` |
